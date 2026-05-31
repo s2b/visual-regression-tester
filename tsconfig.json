@@ -1,22 +1,22 @@
 {
-    "compilerOptions": {
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "target": "es2022",
-        "verbatimModuleSyntax": false,
-        "allowJs": true,
-        "moduleDetection": "force",
-        "strict": true,
-        "noUncheckedIndexedAccess": true,
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "verbatimModuleSyntax": false,
+    "allowJs": true,
+    "moduleDetection": "force",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
 
-        "module": "nodenext",
-        "outDir": "dist",
-        "sourceMap": true,
+    "module": "nodenext",
+    "outDir": "dist",
+    "sourceMap": true,
 
-        "lib": ["es2022", "DOM"],
-        "types": [],
+    "lib": ["es2022", "DOM"],
+    "types": [],
 
-        "declaration": true
-    },
-    "include": ["./src"]
+    "declaration": true
+  },
+  "include": ["./src"]
 }
