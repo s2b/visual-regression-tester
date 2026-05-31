@@ -15,6 +15,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./page": {
+      "types": "./dist/VisualRegressionPage.d.js",
+      "default": "./dist/VisualRegressionPage.js"
+    },
+    "./reporter": {
+      "types": "./dist/VisualRegressionReporter.d.js",
+      "default": "./dist/VisualRegressionReporter.js"
+    },
+    "./collector": {
+      "types": "./dist/UrlCollector.d.js",
+      "default": "./dist/UrlCollector.js"
+    },
+    "./utils": {
+      "types": "./dist/Utils.d.ts",
+      "default": "./dist/Utils.js"
     }
   },
   "files": [
