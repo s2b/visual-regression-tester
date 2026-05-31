@@ -1,0 +1,41 @@
+{
+  "name": "@praetorius/visual-regression-tester",
+  "version": "1-dev",
+  "description": "",
+  "author": "Simon Praetorius",
+  "license": "MIT",
+  "homepage": "https://github.com/s2b/visual-regression-tester",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s2b/visual-regression-tester.git"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "tsc -b",
+    "prepack": "npm run build",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@playwright/test": "^1.60.0",
+    "odiff-bin": "^4.3.8",
+    "sharp": "^0.34.5",
+    "sitemapper": "^4.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.0",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
+  }
+}
