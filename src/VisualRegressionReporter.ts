@@ -23,7 +23,7 @@ export default class VisualRegressionReporter implements Reporter {
         : "failed";
     reportItem.time = result.duration;
     reportItem.retries = result.retry;
-    reportItem.accepted ??= !result.error;
+    reportItem.accepted = false;
     reportItem.screenshotReference = result.attachments.find(
       (attachment) => attachment.name === "reference",
     )?.path;
