@@ -17,9 +17,11 @@ npm i --save-dev @playwright/test @praetorius/visual-regression-tester
 **playwright.config.js:**
 
 ```js
+// @ts-check
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+  testDir: 'tests',
   fullyParallel: true,
   retries: 2,
   reporter: [
@@ -94,10 +96,4 @@ You can add the following argument to connect to the DDEV network:
 
 ```sh
 PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3000/ npx playwright test
-```
-
-To support a custom root CA created with `mkcert`, provide the following environment variable:
-
-```sh
-NODE_EXTRA_CA_CERTS=`mkcert -CAROOT`/rootCA.pem
 ```
