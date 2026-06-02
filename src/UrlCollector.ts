@@ -20,10 +20,16 @@ export default async (playwrightConfig: FullConfig) => {
     const sitemaps = await Promise.all(
       config.sitemapUrls.map((sitemapUrl) => sitemapper.fetch(sitemapUrl)),
     );
+    const testsAdded = new Set();
     sitemaps.forEach((sitemap) => {
       sitemap.sites.forEach((url) => {
+        const identifier = calculateIdentifier(url);
+        if (testsAdded.has(identifier)) {
+          return;
+        }
+        testsAdded.add(identifier);
         report.tests.push({
-          identifier: calculateIdentifier(url),
+          identifier,
           referenceUrl: url,
           subjectUrl: url.replace(config.referenceUrl, config.subjectUrl),
           sitemapUrl: sitemap.url,
