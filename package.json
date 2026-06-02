@@ -16,6 +16,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    },
     "./page": {
       "types": "./dist/VisualRegressionPage.d.js",
       "default": "./dist/VisualRegressionPage.js"
@@ -27,10 +31,6 @@
     "./collector": {
       "types": "./dist/UrlCollector.d.js",
       "default": "./dist/UrlCollector.js"
-    },
-    "./utils": {
-      "types": "./dist/Utils.d.ts",
-      "default": "./dist/Utils.js"
     }
   },
   "files": [

@@ -41,7 +41,23 @@ export default defineConfig({
 });
 ```
 
-### 3. Create playwright test file
+### 3. Create visual regression configuration
+
+**visualregression.config.js:**
+
+```js
+// @ts-check
+import { defineConfig } from '@praetorius/visual-regression-tester';
+
+export default defineConfig({
+  referenceUrl: "https://www.example.com",
+  subjectUrl: "https://example.ddev.site",
+});
+```
+
+See [Config](./src/types.ts) for all available configuration options.
+
+### 4. Create playwright test file
 
 A test file template is available in [visualregression.spec.ts](./template/visualregression.spec.ts).
 This test should work out-of-the-box once copied into the `tests/` directory.
@@ -60,19 +76,6 @@ import type { JSHandle } from '@playwright/test';
 async function preparePageForScreenshot(page: Page) {
   const window: JSHandle<Window & { CCM?: { closeWidget: () => {} } }> = await page.evaluateHandle('window');
   await page.evaluate(window => window.CCM && window.CCM.closeWidget(), window);
-}
-```
-
-### 4. Create visual regression configuration
-
-**visualRegressionReport.json:**
-
-```json
-{
-  "config": {
-    "referenceUrl": "https://www.example.com",
-    "subjectUrl": "https://example.ddev.site"
-  }
 }
 ```
 

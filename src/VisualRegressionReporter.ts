@@ -1,28 +1,17 @@
-import type {
-  FullConfig,
-  Reporter,
-  TestCase,
-  TestResult,
-} from "@playwright/test/reporter";
+import type { Reporter, TestCase, TestResult } from "@playwright/test/reporter";
 import { ODiffResult } from "odiff-bin";
-import { Report } from "./Report.js";
-import {
-  getReportFromEnv,
-  resolveReportFile,
-  writeReportToFile,
-} from "./Utils.js";
+import { getReport, setReport, writeReport } from "./index.js";
+import type { Report } from "./types.js";
 
 export default class VisualRegressionReporter implements Reporter {
-  private reportFile = "";
   private report?: Report;
 
-  onBegin(config: FullConfig) {
-    this.reportFile = resolveReportFile(config.configFile);
-    this.report = getReportFromEnv();
+  onBegin() {
+    this.report = getReport();
   }
 
   onTestEnd(test: TestCase, result: TestResult) {
-    const reportItem = this.report?.tests?.find(
+    const reportItem = this.report?.tests.find(
       (item) => item.referenceUrl === test.title,
     );
     if (!reportItem) {
@@ -62,8 +51,9 @@ export default class VisualRegressionReporter implements Reporter {
   }
 
   onEnd() {
-    if (this.report?.tests?.length && this.reportFile) {
-      writeReportToFile(this.reportFile, this.report);
+    if (this.report) {
+      setReport(this.report);
+      writeReport();
     }
   }
 

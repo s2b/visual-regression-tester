@@ -1,6 +1,7 @@
 export interface ReportItem {
   referenceUrl: string;
   subjectUrl: string;
+  sitemapUrl: string;
   status: "scheduled" | "passed" | "failed" | "flaky" | "skipped";
   retries?: number;
   accepted?: boolean;
@@ -11,12 +12,19 @@ export interface ReportItem {
   time?: number;
 }
 
-export interface ReportConfig {
+export interface Report {
+  referenceUrl: string;
+  subjectUrl: string;
+  tests: ReportItem[];
+}
+
+export interface Config {
   referenceUrl: string;
   subjectUrl: string;
   sitemapUrl?: string;
   threshold?: number;
   increaseWaitForRetry?: boolean;
+  outputPath?: string;
   cachePath?: string;
   run?: {
     limit?: number;
@@ -26,15 +34,11 @@ export interface ReportConfig {
   };
 }
 
-export interface Report {
-  config: ReportConfig;
-  tests?: ReportItem[];
-}
-
-export interface FullReportConfig extends ReportConfig {
+export interface FullConfig extends Config {
   sitemapUrl: string;
   threshold: number;
   increaseWaitForRetry: boolean;
+  outputPath: string;
   cachePath: string;
   run: {
     limit: number;
@@ -42,9 +46,4 @@ export interface FullReportConfig extends ReportConfig {
     skipPassed: boolean;
     skipFlaky: boolean;
   };
-}
-
-export interface FullReport extends Report {
-  config: FullReportConfig;
-  tests: ReportItem[];
 }

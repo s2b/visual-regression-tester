@@ -1,28 +1,24 @@
 import Sitemapper from "sitemapper";
 import { FullConfig } from "@playwright/test";
-import {
-  resolveReportFile,
-  getReportFromFile,
-  storeReportInEnv,
-} from "./Utils.js";
+import { getConfig, getReport, initialize, setReport } from "./index.js";
 
-export default async (config: FullConfig) => {
-  const report = getReportFromFile(resolveReportFile(config.configFile), true);
+export default async (playwrightConfig: FullConfig) => {
+  await initialize(playwrightConfig);
+  const config = getConfig();
+  const report = getReport();
 
   if (!report.tests.length) {
-    console.log("crawling sitemap.xml...");
+    console.log("crawling sitemaps...");
     // TODO crawl robots.txt
     const sitemap = new Sitemapper();
-    const pages = await sitemap.fetch(report.config.sitemapUrl);
+    const pages = await sitemap.fetch(config.sitemapUrl);
     report.tests = pages.sites.map((site) => ({
       referenceUrl: site,
-      subjectUrl: site.replace(
-        report.config.referenceUrl,
-        report.config.subjectUrl,
-      ),
+      subjectUrl: site.replace(config.referenceUrl, config.subjectUrl),
+      sitemapUrl: config.sitemapUrl,
       status: "scheduled",
     }));
   }
 
-  storeReportInEnv(report);
+  setReport(report);
 };
