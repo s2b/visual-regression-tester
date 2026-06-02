@@ -17,17 +17,10 @@ export default class VisualRegressionReporter implements Reporter {
     if (!reportItem) {
       return;
     }
-    if (
-      reportItem.status !== "scheduled" &&
-      reportItem.status !== result.status
-    ) {
-      reportItem.status = "flaky";
-    } else {
-      reportItem.status =
-        result.status === "passed" || result.status === "skipped"
-          ? result.status
-          : "failed";
-    }
+    reportItem.status =
+      result.status === "passed" || result.status === "skipped"
+        ? result.status
+        : "failed";
     reportItem.time = result.duration;
     reportItem.retries = result.retry;
     reportItem.accepted ??= !result.error;

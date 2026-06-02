@@ -1,8 +1,9 @@
 export interface ReportItem {
+  identifier: string;
   referenceUrl: string;
   subjectUrl: string;
   sitemapUrl: string;
-  status: "scheduled" | "passed" | "failed" | "flaky" | "skipped";
+  status: "scheduled" | "passed" | "failed" | "skipped";
   retries?: number;
   accepted?: boolean;
   screenshotReference?: string;
@@ -30,7 +31,6 @@ export interface Config {
     limit?: number;
     skipAccepted?: boolean;
     skipPassed?: boolean;
-    skipFlaky?: boolean;
   };
 }
 
@@ -44,6 +44,5 @@ export interface FullConfig extends Config {
     limit: number;
     skipAccepted: boolean;
     skipPassed: boolean;
-    skipFlaky: boolean;
   };
 }

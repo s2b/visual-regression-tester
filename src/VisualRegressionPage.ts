@@ -1,6 +1,5 @@
 import type { JSHandle, Page } from "@playwright/test";
 import fs from "node:fs";
-import crypto from "node:crypto";
 import path from "node:path";
 import sharp, { type Sharp } from "sharp";
 import odiff from "odiff-bin";
@@ -86,11 +85,12 @@ export class VisualRegressionPage {
     runBefore?: (page: Page) => {},
     extraWait = 0,
     cacheDir?: string,
+    cacheIdentifier?: string,
     forceRetake = false,
   ) {
-    if (cacheDir) {
+    if (cacheDir && cacheIdentifier) {
       fs.mkdirSync(cacheDir, { recursive: true });
-      const cachePath = path.join(cacheDir, this.getCacheIdentifier() + ".png");
+      const cachePath = path.join(cacheDir, cacheIdentifier + ".png");
       if (fs.existsSync(cachePath) && !forceRetake) {
         this.reference = await sharp(cachePath);
       } else {
@@ -160,27 +160,5 @@ export class VisualRegressionPage {
 
   private async waitUntilLoaded() {
     await this.page.waitForLoadState("networkidle");
-  }
-
-  private getCacheIdentifier() {
-    // Uses the same algorithm to calcuate file name as playwright itself
-    return this.sanitizeForFilePath(this.trimLongString(this.referenceUrl));
-  }
-
-  private sanitizeForFilePath(s: string) {
-    return s.replace(/[\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F]+/g, "-");
-  }
-
-  private trimLongString(s: string, length = 100) {
-    if (s.length <= length) return s;
-    const hash = this.calculateSha1(s);
-    const middle = `-${hash.substring(0, 5)}-`;
-    const start = Math.floor((length - middle.length) / 2);
-    const end = length - middle.length - start;
-    return s.substring(0, start) + middle + s.slice(-end);
-  }
-
-  private calculateSha1(s: string) {
-    return crypto.createHash("sha1").update(s).digest("hex");
   }
 }
