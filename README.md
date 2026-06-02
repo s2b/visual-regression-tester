@@ -39,7 +39,29 @@ export default defineConfig({
 });
 ```
 
-### 3. Create visual regression configuration
+### 3. Create playwright test file
+
+A test file template is available in [visualregression.spec.ts](./template/visualregression.spec.ts).
+This test should work out-of-the-box once copied into the `tests/` directory.
+
+Depending on the features of the website you'd like to test, this file might need some adjustments,
+for example:
+
+* Closing cookie banners or hiding other fixed elements via [Locators](https://playwright.dev/docs/locators) or [page.evaluate()](https://playwright.dev/docs/evaluating)
+* [Mocking API calls](https://playwright.dev/docs/mock)
+
+**Example: Closing a CCM19 cookie banner**
+
+```js
+import type { JSHandle } from '@playwright/test';
+
+async function preparePageForScreenshot(page: Page) {
+  const window: JSHandle<Window & { CCM?: { closeWidget: () => {} } }> = await page.evaluateHandle('window');
+  await page.evaluate(window => window.CCM && window.CCM.closeWidget(), window);
+}
+```
+
+### 4. Create visual regression configuration
 
 **visualRegressionReport.json:**
 
