@@ -25,7 +25,7 @@ export function defineConfig(config: Config): FullConfig {
   config.referenceUrl = stripTrailingSlash(config.referenceUrl);
   config.subjectUrl = stripTrailingSlash(config.subjectUrl);
   return {
-    sitemapUrl: config.referenceUrl + "/sitemap.xml",
+    sitemapUrls: [config.referenceUrl + "/sitemap.xml"],
     threshold: 0.2,
     increaseWaitForRetry: true,
     cachePath: "{rootPath}/reference-screenshots/",
@@ -76,15 +76,15 @@ export function testsToRun(tests: ReportItem[]) {
 
 function getConfigFromEnv() {
   if (!process.env[configEnvName]) {
-    throw new Error(
-      'Visual regression config was not properly initialized.',
-    );
+    throw new Error("Visual regression config was not properly initialized.");
   }
   return JSON.parse(process.env[configEnvName]) as FullConfig;
 }
 
 function getReportFromEnv() {
-  return process.env[reportEnvName] ? JSON.parse(process.env[reportEnvName]) as Report : null;
+  return process.env[reportEnvName]
+    ? (JSON.parse(process.env[reportEnvName]) as Report)
+    : null;
 }
 
 function storeConfigInEnv(config: FullConfig) {

@@ -10,14 +10,20 @@ export default async (playwrightConfig: FullConfig) => {
   if (!report.tests.length) {
     console.log("crawling sitemaps...");
     // TODO crawl robots.txt
-    const sitemap = new Sitemapper();
-    const pages = await sitemap.fetch(config.sitemapUrl);
-    report.tests = pages.sites.map((site) => ({
-      referenceUrl: site,
-      subjectUrl: site.replace(config.referenceUrl, config.subjectUrl),
-      sitemapUrl: config.sitemapUrl,
-      status: "scheduled",
-    }));
+    const sitemapper = new Sitemapper();
+    const sitemaps = await Promise.all(
+      config.sitemapUrls.map((sitemapUrl) => sitemapper.fetch(sitemapUrl)),
+    );
+    sitemaps.forEach((sitemap) => {
+      sitemap.sites.forEach((url) => {
+        report.tests.push({
+          referenceUrl: url,
+          subjectUrl: url.replace(config.referenceUrl, config.subjectUrl),
+          sitemapUrl: sitemap.url,
+          status: "scheduled",
+        });
+      });
+    });
   }
 
   setReport(report);

@@ -21,7 +21,7 @@ export interface Report {
 export interface Config {
   referenceUrl: string;
   subjectUrl: string;
-  sitemapUrl?: string;
+  sitemapUrls?: string[];
   threshold?: number;
   increaseWaitForRetry?: boolean;
   outputPath?: string;
@@ -35,7 +35,7 @@ export interface Config {
 }
 
 export interface FullConfig extends Config {
-  sitemapUrl: string;
+  sitemapUrls: string[];
   threshold: number;
   increaseWaitForRetry: boolean;
   outputPath: string;
