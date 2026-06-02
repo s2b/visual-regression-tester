@@ -41,7 +41,7 @@ export default defineConfig({
 });
 ```
 
-### 3. Create visual regression configuration
+### 3. Configure visual regression tester
 
 **visualregression.config.js:**
 
@@ -65,7 +65,8 @@ This test should work out-of-the-box once copied into the `tests/` directory.
 Depending on the features of the website you'd like to test, this file might need some adjustments,
 for example:
 
-* Closing cookie banners or hiding other fixed elements via [Locators](https://playwright.dev/docs/locators) or [page.evaluate()](https://playwright.dev/docs/evaluating)
+* Closing cookie banners or hiding other fixed elements via [Locators](https://playwright.dev/docs/locators)
+  or [page.evaluate()](https://playwright.dev/docs/evaluating)
 * [Mocking API calls](https://playwright.dev/docs/mock)
 
 **Example: Closing a CCM19 cookie banner**
@@ -79,9 +80,25 @@ async function preparePageForScreenshot(page: Page) {
 }
 ```
 
-## Run Tests
+## Run tests
 
-### 1. Start playwright server in docker container:
+### Variant 1: Use local browser binaries
+
+1. Install browser(s) with [playwright install](https://playwright.dev/docs/browsers):
+
+```sh
+npx playwright install --with-deps firefox
+```
+
+2. Run tests:
+
+```sh
+npx playwright test
+```
+
+### Variant 2: Playwright server in docker
+
+1. Start playwright server in docker container:
 
 ```sh
 docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.60.0-noble /bin/sh -c "npx -y playwright@1.60.0 run-server --port 3000 --host 0.0.0.0"
@@ -95,7 +112,7 @@ You can add the following argument to connect to the DDEV network:
 --network ddev_default
 ```
 
-### 2. Run tests with the playwright test runner:
+2. Run tests:
 
 ```sh
 PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3000/ npx playwright test
