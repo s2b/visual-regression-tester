@@ -137,7 +137,7 @@ export class VisualRegressionPage {
   private async disableAnimations() {
     await this.page.addStyleTag({
       content: `
-				* {
+				*, *::before, *::after {
 					animation: none !important;
 					transition: none !important;
 				}
