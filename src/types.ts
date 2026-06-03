@@ -5,12 +5,13 @@ export interface ReportItem {
   sitemapUrl: string;
   status: "scheduled" | "passed" | "failed" | "skipped";
   retries?: number;
+  time?: number;
   accepted?: boolean;
   screenshotReference?: string;
   screenshotSubject?: string;
   screenshotDiff?: string;
-  diffScore?: number;
-  time?: number;
+  pixelsDifferent?: number;
+  percentDifferent?: number;
 }
 
 export interface Report {
@@ -23,10 +24,14 @@ export interface Config {
   referenceUrl: string;
   subjectUrl: string;
   sitemapUrls?: string[];
-  threshold?: number;
   increaseWaitForRetry?: boolean;
   outputPath?: string;
   cachePath?: string;
+  diff?: {
+    threshold?: number;
+    maxPixelsDifferent?: number;
+    maxPercentDifferent?: number;
+  };
   run?: {
     limit?: number;
     skipAccepted?: boolean;
@@ -36,10 +41,14 @@ export interface Config {
 
 export interface FullConfig extends Config {
   sitemapUrls: string[];
-  threshold: number;
   increaseWaitForRetry: boolean;
   outputPath: string;
   cachePath: string;
+  diff: {
+    threshold: number;
+    maxPixelsDifferent: number;
+    maxPercentDifferent: number;
+  };
   run: {
     limit: number;
     skipAccepted: boolean;

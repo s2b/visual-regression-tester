@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import sharp, { type Sharp } from "sharp";
 import odiff from "odiff-bin";
+import { FullConfig } from "./types.js";
 
 export class VisualRegressionPage {
   readonly page: Page;
@@ -25,11 +26,11 @@ export class VisualRegressionPage {
   }
 
   async compareScreenshots(
-    threshold: number,
+    diffConfig: FullConfig["diff"],
     cleanupOutputFiles: true,
   ): Promise<odiff.ODiffResult>;
   async compareScreenshots(
-    threshold: number,
+    diffConfig: FullConfig["diff"],
     cleanupOutputFiles: false,
   ): Promise<
     odiff.ODiffResult & {
@@ -41,7 +42,10 @@ export class VisualRegressionPage {
       };
     }
   >;
-  async compareScreenshots(threshold: number, cleanupOutputFiles = true) {
+  async compareScreenshots(
+    diffConfig: FullConfig["diff"],
+    cleanupOutputFiles = true,
+  ) {
     if (!this.reference || !this.subject) {
       throw new Error(
         "Reference and/or subject screenshot not available for comparison.",
@@ -54,10 +58,18 @@ export class VisualRegressionPage {
       this.reference.png().toFile(referencePath),
       this.subject.png().toFile(subjectPath),
     ]);
-    const result = await odiff.compare(referencePath, subjectPath, diffPath, {
-      threshold,
+    let result = await odiff.compare(referencePath, subjectPath, diffPath, {
+      threshold: diffConfig.threshold,
       diffOverlay: 0.5,
     });
+    if (
+      !result.match &&
+      result.reason == "pixel-diff" &&
+      (result.diffCount < diffConfig.maxPixelsDifferent ||
+        result.diffPercentage < diffConfig.maxPercentDifferent)
+    ) {
+      result = { match: true };
+    }
     const cleanup = () => {
       fs.rmSync(referencePath);
       fs.rmSync(subjectPath);

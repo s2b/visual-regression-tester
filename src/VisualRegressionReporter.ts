@@ -39,7 +39,8 @@ export default class VisualRegressionReporter implements Reporter {
       )?.description ?? "{}",
     );
     if (!odiffResult.match && odiffResult.reason === "pixel-diff") {
-      reportItem.diffScore = odiffResult.diffCount;
+      reportItem.pixelsDifferent = odiffResult.diffCount;
+      reportItem.percentDifferent = odiffResult.diffPercentage;
     }
   }
 

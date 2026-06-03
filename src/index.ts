@@ -27,11 +27,16 @@ export function defineConfig(config: Config): FullConfig {
   config.subjectUrl = stripTrailingSlash(config.subjectUrl);
   return {
     sitemapUrls: [config.referenceUrl + "/sitemap.xml"],
-    threshold: 0.2,
     increaseWaitForRetry: true,
     cachePath: "{rootPath}/reference-screenshots/",
     outputPath: "{rootPath}/visual-regression-report/",
     ...config,
+    diff: {
+      threshold: 0.2,
+      maxPixelsDifferent: 0,
+      maxPercentDifferent: 0,
+      ...config.diff,
+    },
     run: {
       limit: -1,
       skipAccepted: false,

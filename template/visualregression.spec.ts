@@ -20,7 +20,7 @@ tests.forEach(({ identifier, referenceUrl, subjectUrl }) => {
 		const visualRegressionPage = new VisualRegressionPage(page, referenceUrl, subjectUrl, name => test.info().outputPath(name));
 		await test.step('Take screenshot from reference page', () => visualRegressionPage.takeReferenceScreenshot(preparePageForScreenshot, 0, config.cachePath, identifier));
 		await test.step('Take screenshot of subject page', () => visualRegressionPage.takeSubjectScreenshot(preparePageForScreenshot, extraWait));
-		const { paths, ...result } = await test.step('Compare screenshots', () => visualRegressionPage.compareScreenshots(config.threshold, false));
+		const { paths, ...result } = await test.step('Compare screenshots', () => visualRegressionPage.compareScreenshots(config.diff, false));
 
 		// Collect data for failed tests
 		expect.soft(result.match).toBeTruthy();
