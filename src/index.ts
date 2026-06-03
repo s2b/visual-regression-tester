@@ -33,7 +33,7 @@ export function defineConfig(config: Config): FullConfig {
     ...config,
     diff: {
       threshold: 0.2,
-      maxPixelsDifferent: 0,
+      maxPixelsDifferent: 10,
       maxPercentDifferent: 0,
       ...config.diff,
     },
