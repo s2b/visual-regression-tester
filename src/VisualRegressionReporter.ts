@@ -28,7 +28,7 @@ export default class VisualRegressionReporter implements Reporter {
         break;
 
       default:
-        reportItem.status = 'failed';
+        reportItem.status = "failed";
     }
     reportItem.time = result.duration;
     reportItem.retries = result.retry;
@@ -51,6 +51,7 @@ export default class VisualRegressionReporter implements Reporter {
       reportItem.pixelsDifferent = odiffResult.diffCount;
       reportItem.percentDifferent = odiffResult.diffPercentage;
     }
+    delete reportItem.updateScreenshotReference;
   }
 
   onEnd() {

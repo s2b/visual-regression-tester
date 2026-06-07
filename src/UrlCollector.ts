@@ -13,6 +13,15 @@ export default async (playwrightConfig: FullConfig) => {
   const config = getConfig();
   const report = getReport();
 
+  // Schedule tests where reference screenshot should be retaken
+  report.tests = report.tests.map((test) => {
+    if (test.updateScreenshotReference) {
+      test.status = "scheduled";
+      test.accepted = false;
+    }
+    return test;
+  });
+
   if (!report.tests.length) {
     console.log("Crawling sitemaps...");
     const sitemapper = new Sitemapper();

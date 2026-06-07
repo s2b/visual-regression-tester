@@ -9,6 +9,7 @@ export interface ReportItem {
   retries?: number;
   time?: number;
   accepted?: boolean;
+  updateScreenshotReference?: boolean;
   screenshotReference?: string;
   screenshotSubject?: string;
   screenshotDiff?: string;
