@@ -23,7 +23,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: 'tests',
   fullyParallel: true,
-  retries: 2,
+  retries: 0,
   reporter: [
     ['dot'],
     ['@praetorius/visual-regression-tester/reporter'],
