@@ -40,7 +40,7 @@ export function defineConfig(config: Config): FullConfig {
     run: {
       limit: -1,
       skipAccepted: false,
-      skipPassed: false,
+      status: ['scheduled', 'passed', 'failed'],
       ...config.run,
     },
   };
@@ -68,10 +68,7 @@ export function testsToRun(tests: ReportItem[]) {
     if (config.run.skipAccepted && test.accepted) {
       return false;
     }
-    if (config.run.skipPassed && test.status === "passed") {
-      return false;
-    }
-    return true;
+    return config.run.status.includes(test.status);
   });
   return config.run.limit < 0 ? tests : tests.slice(0, config.run.limit);
 }

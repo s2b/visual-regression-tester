@@ -1,9 +1,11 @@
+type TestStatus = "scheduled" | "passed" | "failed";
+
 export interface ReportItem {
   identifier: string;
   referenceUrl: string;
   subjectUrl: string;
   sitemapUrl: string;
-  status: "scheduled" | "passed" | "failed" | "skipped";
+  status: TestStatus;
   retries?: number;
   time?: number;
   accepted?: boolean;
@@ -34,8 +36,8 @@ export interface Config {
   };
   run?: {
     limit?: number;
+    status?: TestStatus[];
     skipAccepted?: boolean;
-    skipPassed?: boolean;
   };
 }
 
@@ -51,7 +53,7 @@ export interface FullConfig extends Config {
   };
   run: {
     limit: number;
+    status: TestStatus[];
     skipAccepted: boolean;
-    skipPassed: boolean;
   };
 }
