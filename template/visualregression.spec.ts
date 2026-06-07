@@ -29,6 +29,7 @@ tests.forEach(({ identifier, referenceUrl, subjectUrl, updateScreenshotReference
 				test.info().attach('odiff', { path: paths.diffPath, contentType: 'image/png' }),
 				test.info().attach('reference', { path: paths.referencePath, contentType: 'image/png' }),
 				test.info().attach('subject', { path: paths.subjectPath, contentType: 'image/png' }),
+				test.info().attach('minimap', { path: paths.minimapPath, contentType: 'image/png' }),
 			]);
 			test.info().annotations.push({ type: 'odiff result', description: JSON.stringify(result)});
 		}

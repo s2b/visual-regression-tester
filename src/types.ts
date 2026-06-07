@@ -13,6 +13,7 @@ export interface ReportItem {
   screenshotReference?: string;
   screenshotSubject?: string;
   screenshotDiff?: string;
+  screenshotMinimap?: string;
   pixelsDifferent?: number;
   percentDifferent?: number;
 }

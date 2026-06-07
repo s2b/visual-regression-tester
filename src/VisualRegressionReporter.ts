@@ -42,6 +42,9 @@ export default class VisualRegressionReporter implements Reporter {
     reportItem.screenshotDiff = result.attachments.find(
       (attachment) => attachment.name === "odiff",
     )?.path;
+    reportItem.screenshotMinimap = result.attachments.find(
+      (attachment) => attachment.name === "minimap",
+    )?.path;
     const odiffResult: ODiffResult = JSON.parse(
       result.annotations.find(
         (annotation) => annotation.type === "odiff result",

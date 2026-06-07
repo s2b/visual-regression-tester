@@ -38,6 +38,7 @@ export class VisualRegressionPage {
         referencePath: string;
         subjectPath: string;
         diffPath: string;
+        minimapPath: string;
         cleanup: () => void;
       };
     }
@@ -54,6 +55,7 @@ export class VisualRegressionPage {
     const referencePath = this.createOutputFilePath("reference.png");
     const subjectPath = this.createOutputFilePath("subject.png");
     const diffPath = this.createOutputFilePath("diff.png");
+    const minimapPath = this.createOutputFilePath("minimap.png");
     await Promise.all([
       this.reference.png().toFile(referencePath),
       this.subject.png().toFile(subjectPath),
@@ -61,6 +63,7 @@ export class VisualRegressionPage {
     let result = await odiff.compare(referencePath, subjectPath, diffPath, {
       threshold: diffConfig.threshold,
       diffOverlay: 0.5,
+      captureDiffLines: true,
     });
     if (
       !result.match &&
@@ -70,11 +73,35 @@ export class VisualRegressionPage {
     ) {
       result = { match: true };
     }
+    if (!result.match && result.reason == "pixel-diff" && result.diffLines) {
+      const channels = 4;
+      const height = (await this.reference.metadata()).height;
+      const data = Buffer.alloc(height * channels, 0);
+      result.diffLines.forEach((y) => {
+        const offset = y * channels;
+        data[offset] = 255;
+        data[offset + 1] = 0;
+        data[offset + 2] = 0;
+        data[offset + 3] = 255;
+      });
+      await sharp(data, {
+        raw: {
+          width: 1,
+          height,
+          channels,
+        },
+      })
+        .png()
+        .toFile(minimapPath);
+    }
     const cleanup = () => {
       fs.rmSync(referencePath);
       fs.rmSync(subjectPath);
       if (fs.existsSync(diffPath)) {
         fs.rmSync(diffPath);
+      }
+      if (fs.existsSync(minimapPath)) {
+        fs.rmSync(minimapPath);
       }
     };
     if (cleanupOutputFiles) {
@@ -87,6 +114,7 @@ export class VisualRegressionPage {
           referencePath,
           subjectPath,
           diffPath,
+          minimapPath,
           cleanup,
         },
       };

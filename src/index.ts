@@ -149,7 +149,8 @@ function copyScreenshotFiles(report: Report, outputPath: string) {
     if (
       !test.screenshotDiff ||
       !test.screenshotReference ||
-      !test.screenshotSubject
+      !test.screenshotSubject ||
+      !test.screenshotMinimap
     ) {
       if (test.status === "passed") {
         if (fs.existsSync(testOutputPath)) {
@@ -161,7 +162,8 @@ function copyScreenshotFiles(report: Report, outputPath: string) {
     if (
       test.screenshotDiff.startsWith(test.identifier) ||
       test.screenshotReference.startsWith(test.identifier) ||
-      test.screenshotSubject.startsWith(test.identifier)
+      test.screenshotSubject.startsWith(test.identifier) ||
+      test.screenshotMinimap.startsWith(test.identifier)
     ) {
       return test;
     }
@@ -173,6 +175,7 @@ function copyScreenshotFiles(report: Report, outputPath: string) {
       "screenshotDiff",
       "screenshotReference",
       "screenshotSubject",
+      "screenshotMinimap",
     ] as const) {
       if (test[property]) {
         const oldPath = test[property];
