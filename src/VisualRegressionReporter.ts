@@ -18,13 +18,13 @@ export default class VisualRegressionReporter implements Reporter {
       return;
     }
     switch (result.status) {
-      case 'passed':
-        reportItem.status = 'passed';
+      case "passed":
+        reportItem.status = "passed";
         break;
 
-      case 'skipped':
-      case 'interrupted':
-        reportItem.status = 'scheduled';
+      case "skipped":
+      case "interrupted":
+        reportItem.status = "scheduled";
         break;
 
       default:

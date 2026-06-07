@@ -40,7 +40,7 @@ export function defineConfig(config: Config): FullConfig {
     run: {
       limit: -1,
       skipAccepted: false,
-      status: ['scheduled', 'passed', 'failed'],
+      status: ["scheduled", "passed", "failed"],
       ...config.run,
     },
   };
