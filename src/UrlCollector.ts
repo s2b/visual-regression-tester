@@ -22,31 +22,31 @@ export default async (playwrightConfig: FullConfig) => {
     return test;
   });
 
-  if (!report.tests.length) {
-    console.log("Crawling sitemaps...");
-    const sitemapper = new Sitemapper();
-    const sitemaps = await Promise.all(
-      config.sitemapUrls.map((sitemapUrl) => sitemapper.fetch(sitemapUrl)),
-    );
-    const testsAdded = new Set();
-    sitemaps.forEach((sitemap) => {
-      console.log(`  ${sitemap.url} (${sitemap.sites.length} urls)`);
-      sitemap.sites.forEach((url) => {
-        const identifier = calculateIdentifier(url);
-        if (testsAdded.has(identifier)) {
-          return;
-        }
-        testsAdded.add(identifier);
-        report.tests.push({
-          identifier,
-          referenceUrl: url,
-          subjectUrl: url.replace(config.referenceUrl, config.subjectUrl),
-          sitemapUrl: sitemap.url,
-          status: "scheduled",
-        });
+  console.log("Crawling sitemaps...");
+  const sitemapper = new Sitemapper();
+  const sitemaps = await Promise.all(
+    config.sitemapUrls.map((sitemapUrl) => sitemapper.fetch(sitemapUrl)),
+  );
+  const existingTests = new Set(report.tests.map(test => test.identifier));
+  sitemaps.forEach((sitemap) => {
+    let added = 0;
+    sitemap.sites.forEach((url) => {
+      const identifier = calculateIdentifier(url);
+      if (existingTests.has(identifier)) {
+        return;
+      }
+      existingTests.add(identifier);
+      added++;
+      report.tests.push({
+        identifier,
+        referenceUrl: url,
+        subjectUrl: url.replace(config.referenceUrl, config.subjectUrl),
+        sitemapUrl: sitemap.url,
+        status: "scheduled",
       });
     });
-  }
+    console.log(`  ${sitemap.url} (${sitemap.sites.length} urls, ${added} added)`);
+  });
 
   setReport(report);
 };
