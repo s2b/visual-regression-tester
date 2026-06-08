@@ -28,7 +28,6 @@ export interface Config {
   referenceUrl: string;
   subjectUrl: string;
   sitemapUrls?: string[];
-  increaseWaitForRetry?: boolean;
   outputPath?: string;
   cachePath?: string;
   diff?: {
@@ -45,7 +44,6 @@ export interface Config {
 
 export interface FullConfig extends Config {
   sitemapUrls: string[];
-  increaseWaitForRetry: boolean;
   outputPath: string;
   cachePath: string;
   diff: {

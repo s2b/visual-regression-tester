@@ -123,7 +123,6 @@ export class VisualRegressionPage {
 
   async takeReferenceScreenshot(
     runBefore?: (page: Page) => {},
-    extraWait = 0,
     cacheDir?: string,
     cacheIdentifier?: string,
     forceRetake = false,
@@ -137,7 +136,6 @@ export class VisualRegressionPage {
         this.reference = await this.takeScreenshot(
           this.referenceUrl,
           runBefore,
-          extraWait,
         );
         await this.reference.png().toFile(cachePath);
       }
@@ -147,20 +145,12 @@ export class VisualRegressionPage {
     return this.reference;
   }
 
-  async takeSubjectScreenshot(runBefore?: (page: Page) => {}, extraWait = 0) {
-    this.subject = await this.takeScreenshot(
-      this.subjectUrl,
-      runBefore,
-      extraWait,
-    );
+  async takeSubjectScreenshot(runBefore?: (page: Page) => {}) {
+    this.subject = await this.takeScreenshot(this.subjectUrl, runBefore);
     return this.subject;
   }
 
-  private async takeScreenshot(
-    url: string,
-    runBefore?: (page: Page) => {},
-    extraWait = 0,
-  ) {
+  private async takeScreenshot(url: string, runBefore?: (page: Page) => {}) {
     await this.page.goto(url);
     await this.disableAnimations();
     await this.disableLazyLoading();
@@ -168,9 +158,6 @@ export class VisualRegressionPage {
       await runBefore(this.page);
     }
     await this.waitUntilLoaded();
-    if (extraWait) {
-      await this.page.waitForTimeout(extraWait);
-    }
     return sharp(await this.page.screenshot({ fullPage: true }));
   }
 

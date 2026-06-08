@@ -27,7 +27,6 @@ export function defineConfig(config: Config): FullConfig {
   config.subjectUrl = stripTrailingSlash(config.subjectUrl);
   return {
     sitemapUrls: [config.referenceUrl + "/sitemap.xml"],
-    increaseWaitForRetry: true,
     cachePath: "{rootPath}/reference-screenshots/",
     outputPath: "{rootPath}/visual-regression-report/",
     ...config,
