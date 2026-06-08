@@ -1,54 +1,42 @@
 # Visual Regression Tester
 
-Note that this package is still work-in-progress. Use at your own risk!
+**Visual Regression Tester** takes screenshots of a **reference website** and compares
+them with screenshots of a **subject website**. This can be used to automatically identify
+unintended visual changes introduced by updates or refactorings, for example:
 
-## Setup
+* switching the frontend build system (e. g. from webpack to Vite)
+* upgrading the content management system (e. g. from TYPO3 v12 to TYPO3 v13)
 
-### 1. Setup node packages
+Visual Regression Tester encourages a workflow where **the playwright test runner and the
+user** collaborate on a shared report file. With each test run, the report is updated
+and refined.
+
+The user can manually **accept** both passing and failing tests. Accepted tests are skipped
+in future runs. Over time, more tests become accepted: either because playwright verifies
+them automatically or because the user reviews and approves the remaining failures.
+
+The goal is for every test to reach the **accepted** state.
+
+## Getting started
+
+### 1. Initialize project
+
+You can use the [visual-regression-starter](https://github.com/s2b/visual-regression-starter)
+to setup your project:
 
 ```sh
-mkdir visual-regression-tests
-cd visual-regression-tests
-npm i --save-dev @playwright/test @praetorius/visual-regression-tester
+git clone --depth=1 https://github.com/s2b/visual-regression-starter.git visual-regression-project
+cd visual-regression-project
+rm -rf .git && git init
+npm install
 ```
 
-### 2. Configure playwright
+### 2. Configure visual regression tester
 
-**playwright.config.js:**
-
-```js
-// @ts-check
-import { defineConfig, devices } from '@playwright/test';
-
-export default defineConfig({
-  testDir: 'tests',
-  fullyParallel: true,
-  retries: 0,
-  reporter: [
-    ['dot'],
-    ['@praetorius/visual-regression-tester/reporter'],
-  ],
-  use: {
-    ignoreHTTPSErrors: true,
-  },
-  globalSetup: ['@praetorius/visual-regression-tester/collector'],
-  projects: [
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-  ],
-});
-```
-
-### 3. Configure visual regression tester
-
-**visualregression.config.js:**
+Set the reference url (e. g. your production system) and the subject url (e. g. your
+development system) in `visualregression.config.ts`:
 
 ```js
-// @ts-check
-import { defineConfig } from '@praetorius/visual-regression-tester';
-
 export default defineConfig({
   referenceUrl: "https://www.example.com",
   subjectUrl: "https://example.ddev.site",
@@ -57,50 +45,17 @@ export default defineConfig({
 
 See [Config](./src/types.ts) for all available configuration options.
 
-### 4. Create playwright test file
+### 3. Adjust playwright test file
 
-A test file template is available in [visualregression.spec.ts](./template/visualregression.spec.ts).
-This test should work out-of-the-box once copied into the `tests/` directory.
-
-Depending on the features of the website you'd like to test, this file might need some adjustments,
-for example:
+A boilerplate test file is available in `tests/visualregression.spec.ts`, which should work
+out-of-the-box. However, depending on the features of the website you'd like to test,
+this file might need some adjustments, for example:
 
 * Closing cookie banners or hiding other fixed elements via [Locators](https://playwright.dev/docs/locators)
   or [page.evaluate()](https://playwright.dev/docs/evaluating)
 * [Mocking API calls](https://playwright.dev/docs/mock)
 
-**Example: Closing a CCM19 cookie banner via JavaScript**
-
-```js
-import type { JSHandle } from '@playwright/test';
-
-async function preparePageForScreenshot(page: Page) {
-  const window: JSHandle<Window & { CCM?: { closeWidget: () => {} } }> = await page.evaluateHandle('window');
-  await page.evaluate(window => window.CCM && window.CCM.closeWidget(), window);
-}
-```
-
-**Example: Hiding a Usercentrics cookie banner via CSS**
-
-```js
-async function preparePageForScreenshot(page: Page) {
-  await page.addStyleTag({
-    content: `
-      #usercentrics-cmp-ui {
-        display: none !important
-      }
-    `
-  });
-}
-```
-
-**Example: Blocking all mp4 videos**
-
-```js
-await page.route('*/**/*.mp4', async route => {
-  await route.abort();
-});
-```
+See also `TestSnippets.md` in the project directory.
 
 ## Run tests
 
