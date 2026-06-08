@@ -47,7 +47,7 @@ export interface Config {
 
   /**
    * Path where the visual regression report should be written to
-   * @default 'visual-regression-report/'
+   * @default 'visual-regression-results/'
    */
   outputPath?: string;
 

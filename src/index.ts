@@ -4,8 +4,8 @@ import path from "node:path";
 import fs from "node:fs";
 import crypto from "node:crypto";
 
-const configFileName = "visualRegression.config.js";
-const reportFileName = "visualRegressionReport.json";
+const configFileName = "visualregression.config.js";
+const reportFileName = "visualregression.report.json";
 const configEnvName = "VISUAL_REGRESSION_CONFIG";
 const reportEnvName = "VISUAL_REGRESSION_REPORT";
 
@@ -28,7 +28,7 @@ export function defineConfig(config: Config): FullConfig {
   return {
     sitemapUrls: [config.referenceUrl + "/sitemap.xml"],
     cachePath: "{rootPath}/reference-screenshots/",
-    outputPath: "{rootPath}/visual-regression-report/",
+    outputPath: "{rootPath}/visual-regression-results/",
     ...config,
     diff: {
       threshold: 0.2,
