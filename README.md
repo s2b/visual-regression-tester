@@ -83,7 +83,7 @@ docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr
 
 (You might need to adjust the version numbers)
 
-You can add the following argument to connect to the DDEV network:
+You can add the following argument to connect to the [DDEV](https://ddev.com/) network:
 
 ```sh
 --network ddev_default
