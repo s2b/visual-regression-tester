@@ -38,7 +38,8 @@ export interface Config {
   subjectUrl: string;
 
   /**
-   * One or more full URLs to xml sitemaps that should be crawled
+   * One or more full URLs to xml sitemaps that should be crawled.
+   * If a report already exists, only new items will be added to the report.
    * @default [referenceUrl + '/sitemap.xml']
    * @example ['https://www.example.com/sitemap.xml']
    */
