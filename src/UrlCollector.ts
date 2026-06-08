@@ -27,7 +27,7 @@ export default async (playwrightConfig: FullConfig) => {
   const sitemaps = await Promise.all(
     config.sitemapUrls.map((sitemapUrl) => sitemapper.fetch(sitemapUrl)),
   );
-  const existingTests = new Set(report.tests.map(test => test.identifier));
+  const existingTests = new Set(report.tests.map((test) => test.identifier));
   sitemaps.forEach((sitemap) => {
     let added = 0;
     sitemap.sites.forEach((url) => {
@@ -45,7 +45,9 @@ export default async (playwrightConfig: FullConfig) => {
         status: "scheduled",
       });
     });
-    console.log(`  ${sitemap.url} (${sitemap.sites.length} urls, ${added} added)`);
+    console.log(
+      `  ${sitemap.url} (${sitemap.sites.length} urls, ${added} added)`,
+    );
   });
 
   setReport(report);
