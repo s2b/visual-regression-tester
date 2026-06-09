@@ -36,6 +36,9 @@
   "files": [
     "dist/**/*"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "tsc -b",
