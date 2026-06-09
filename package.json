@@ -1,7 +1,7 @@
 {
   "name": "@praetorius/visual-regression-tester",
   "version": "1-dev",
-  "description": "",
+  "description": "Collects and compares screenshots of websites",
   "author": "Simon Praetorius",
   "license": "MIT",
   "homepage": "https://github.com/s2b/visual-regression-tester",

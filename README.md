@@ -94,3 +94,16 @@ You can add the following argument to connect to the [DDEV](https://ddev.com/) n
 ```sh
 PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3000/ npx playwright test
 ```
+
+## Review test results
+
+Test results are collected in a report folder that contains screenshots of failed tests as well as
+a JSON report file named `visualregression.report.json`. That JSON file can either be processed
+manually or can be viewed and edited with the
+[visual-regression-viewer](https://github.com/s2b/visual-regression-viewer):
+
+```sh
+npx @praetorius/visual-regression-viewer visual-regression-results/visualregression.report.json
+```
+
+(Note that, in contrast to other parts of this project, LLMs were involved in the creation of the viewer)
