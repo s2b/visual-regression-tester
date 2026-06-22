@@ -4,7 +4,7 @@ import path from "node:path";
 import fs from "node:fs";
 import crypto from "node:crypto";
 
-const configFileName = "visualregression.config.js";
+const configFileNames = ["visualregression.config.ts", "visualregression.config.mts", "visualregression.config.mjs", "visualregression.config.js"];
 const reportFileName = "visualregression.report.json";
 const configEnvName = "VISUAL_REGRESSION_CONFIG";
 const reportEnvName = "VISUAL_REGRESSION_REPORT";
@@ -100,10 +100,12 @@ function storeReportInEnv(report: Report) {
 
 async function getConfigFromFile(rootPath: string): Promise<FullConfig> {
   rootPath = stripTrailingSlash(rootPath);
-  const configFile = path.join(rootPath, configFileName);
-  if (!fs.existsSync(configFile)) {
+  const configFile = configFileNames
+    .map(fileName => path.join(rootPath, fileName))
+    .find(filePath => fs.existsSync(filePath));
+  if (!configFile) {
     throw new Error(
-      `Visual regression config file does not exist in "${configFile}".`,
+      `Visual regression config file does not exist, file names checked: "${configFileNames.join('", "')}".`,
     );
   }
   const config: FullConfig = (await import(configFile)).default;
