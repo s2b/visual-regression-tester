@@ -78,7 +78,7 @@ npx playwright test
 1. Start playwright server in docker container:
 
 ```sh
-docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.60.0-noble /bin/sh -c "npx -y playwright@1.60.0 run-server --port 3000 --host 0.0.0.0"
+docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.61.0-noble /bin/sh -c "npx -y playwright@1.61.0 run-server --port 3000 --host 0.0.0.0"
 ```
 
 (You might need to adjust the version numbers)
