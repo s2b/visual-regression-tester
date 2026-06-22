@@ -48,9 +48,11 @@ export default class VisualRegressionReporter implements Reporter {
     const odiffResult: ODiffResult = JSON.parse(
       result.annotations.find(
         (annotation) => annotation.type === "odiff result",
-      )?.description ?? "{}",
+      )?.description ?? "null",
     );
-    if (!odiffResult.match && odiffResult.reason === "pixel-diff") {
+    if (!odiffResult || odiffResult.match) {
+      reportItem.pixelsDifferent = reportItem.percentDifferent = 0;
+    } else if (odiffResult.reason === "pixel-diff") {
       reportItem.pixelsDifferent = odiffResult.diffCount;
       reportItem.percentDifferent = odiffResult.diffPercentage;
     }
