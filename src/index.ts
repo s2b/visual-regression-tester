@@ -12,7 +12,6 @@ const configFileNames = [
 ];
 const reportFileName = "visualregression.report.json";
 const configEnvName = "VISUAL_REGRESSION_CONFIG";
-const reportEnvName = "VISUAL_REGRESSION_REPORT";
 
 export async function initialize(playwrightConfig: PlaywrightConfig) {
   const rootPath = playwrightConfig.configFile
@@ -55,11 +54,11 @@ export function getConfig() {
 }
 
 export function getReport() {
-  return getReportFromEnv() ?? getReportFromFile();
+  return getReportFromFile();
 }
 
 export function setReport(report: Report) {
-  storeReportInEnv(report);
+  writeReportToFile(report);
 }
 
 export function writeReport() {
@@ -89,18 +88,8 @@ function getConfigFromEnv() {
   return JSON.parse(process.env[configEnvName]) as FullConfig;
 }
 
-function getReportFromEnv() {
-  return process.env[reportEnvName]
-    ? (JSON.parse(process.env[reportEnvName]) as Report)
-    : null;
-}
-
 function storeConfigInEnv(config: FullConfig) {
   process.env[configEnvName] = JSON.stringify(config);
-}
-
-function storeReportInEnv(report: Report) {
-  process.env[reportEnvName] = JSON.stringify(report);
 }
 
 async function getConfigFromFile(rootPath: string): Promise<FullConfig> {
