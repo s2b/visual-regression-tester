@@ -1,2 +1,7 @@
 /node_modules
 /dist
+
+# Test Result folders
+/visual-regression-results
+/reference-screenshots
+/test-results
