@@ -1,2 +1,10 @@
 /node_modules
 /dist
+
+# Test Result folders
+/visual-regression-results
+/reference-screenshots
+/test-results
+
+# Local dev environment: a clone of visual-regression-starter, see `npm run dev:setup`
+/dev/

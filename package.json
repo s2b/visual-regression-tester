@@ -1,6 +1,6 @@
 {
   "name": "@praetorius/visual-regression-tester",
-  "version": "1-dev",
+  "version": "1.0.0-dev",
   "description": "Collects and compares screenshots of websites",
   "author": "Simon Praetorius",
   "license": "MIT",
@@ -42,9 +42,11 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "tsc -b",
+    "build:watch": "tsc -b --watch",
     "prepack": "npm run build",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev:setup": "bash scripts/setup-dev.sh"
   },
   "dependencies": {
     "@playwright/test": "^1.61.0",
