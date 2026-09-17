@@ -119,8 +119,10 @@ npm run dev:setup
 
 This clones [visual-regression-starter](https://github.com/s2b/visual-regression-starter) into
 `dev/` and links it to your local build instead of the published npm package, so it always
-tests your working copy of this repo. `dev/` is gitignored; rerun `npm run dev:setup` any time
-to pull the starter's latest changes and rebuild the link.
+tests your working copy of this repo.
 
-See `dev/visualregression.config.ts` (created by the setup) and the "Getting started" section
-above for how to point it at a reference/subject site.
+Edit `dev/visualregression.config.ts` to fit your needs like described in "Getting started" section above. 
+
+Rerunning `npm run dev:setup` re-fetches `dev/` from scratch and discards local edits made there, so only do that to pick up starter changes, not routinely.
+
+Changes under `src/` aren't picked up until rebuilt - run `npm run build`, or `npm run build:watch` in a separate terminal to rebuild automatically on every save.

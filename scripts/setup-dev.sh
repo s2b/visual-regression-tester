@@ -1,33 +1,25 @@
 #!/usr/bin/env bash
-# Sets up dev/ as a clone of visual-regression-starter for locally testing
+# Sets up dev/ as a copy of visual-regression-starter for locally testing
 # this library. dev/ consumes this repo's own build instead of the published
-# npm package (via a node_modules symlink this script manages), so it stays
-# untouched by git and can always be cleanly re-synced with `git -C dev pull`.
+# npm package, via `npm link` (which installs dev/'s regular deps and
+# symlinks this package into dev/node_modules in one go).
+#
+# dev/ has no .git of its own (stripped after cloning) so it can't be
+# mistaken for a repo of its own. That means re-running this script discards
+# and re-fetches dev/ from scratch, including any local edits you made there
+# (e.g. to visualregression.config.ts) - that's the tradeoff for never having
+# to `git pull`/merge inside it.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if [ -d dev ]; then
-  echo "dev/ already exists, pulling latest changes from visual-regression-starter..."
-  git -C dev pull
-else
-  git clone https://github.com/s2b/visual-regression-starter.git dev
+  echo "Removing existing dev/ (any local changes there, e.g. to visualregression.config.ts, will be lost)..."
+  rm -rf dev
 fi
+git clone --depth=1 https://github.com/s2b/visual-regression-starter.git dev
+rm -rf dev/.git
 
 npm run build
-npm --prefix dev install
+(cd dev && npm link ..)
 
-rm -rf dev/node_modules/@praetorius/visual-regression-tester
-mkdir -p dev/node_modules/@praetorius
-ln -s ../../.. dev/node_modules/@praetorius/visual-regression-tester
-
-cat <<'EOF'
-
-dev/ is ready and linked to your local build.
-Edit dev/visualregression.config.ts to point at what you want to test, then:
-
-  cd dev && npx playwright install --with-deps firefox   # once
-  cd dev && npx playwright test
-
-If you change files under src/, rerun `npm run dev:setup` (or just
-`npm run build`) to pick up the changes.
-EOF
+echo "dev/ is ready and linked to your local build."
