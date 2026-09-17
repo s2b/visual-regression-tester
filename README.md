@@ -107,3 +107,20 @@ npx @praetorius/visual-regression-viewer visual-regression-results/visualregress
 ```
 
 (Note that, in contrast to other parts of this project, LLMs were involved in the creation of the viewer)
+
+## Development
+
+This repository is the library itself and doesn't contain a runnable test setup. To try out
+local changes against a real Playwright run:
+
+```sh
+npm run dev:setup
+```
+
+This clones [visual-regression-starter](https://github.com/s2b/visual-regression-starter) into
+`dev/` and links it to your local build instead of the published npm package, so it always
+tests your working copy of this repo. `dev/` is gitignored; rerun `npm run dev:setup` any time
+to pull the starter's latest changes and rebuild the link.
+
+See `dev/visualregression.config.ts` (created by the setup) and the "Getting started" section
+above for how to point it at a reference/subject site.

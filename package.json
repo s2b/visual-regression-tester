@@ -44,7 +44,8 @@
     "build": "tsc -b",
     "prepack": "npm run build",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev:setup": "bash scripts/setup-dev.sh"
   },
   "dependencies": {
     "@playwright/test": "^1.61.0",
